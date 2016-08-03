@@ -16,10 +16,13 @@ const CounterView = Backbone.View.extend({
 
     render() {
         this.$el.html(`
-            <h1>Backbone ${this.model.get('num')}</h1>
-            <h2>Collection length: ${this.collection.length}</h2>
+            <h1>Backbone Part</h1>
+
+            <h2>Model num: ${this.model.get('num')}</h2>
             <button class="js-increment">+</button>
             <button class="js-decrement">-</button>
+
+            <h2>Collection length: ${this.collection.length}</h2>
             <button class="js-push">push</button>
             <button class="js-pop">pop</button>
         `);

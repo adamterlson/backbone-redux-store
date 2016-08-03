@@ -12,6 +12,7 @@ import CounterCollection from './CounterCollection';
 const myModel = new CounterModel({ num: 3 });
 const myCollection = new CounterCollection();
 
+// Create your Backbone-backed, redux-compliant store
 const store = configureStore({ myModel, myCollection });
 
 // Render Backbone part

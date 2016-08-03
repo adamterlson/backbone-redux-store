@@ -10,10 +10,13 @@ const Counter = ({
     onPop
 }) => (
     <div>
-        <h1>React {value}</h1>
-        <h2>Collection length {length}</h2>
+        <h1>React Part</h1>
+
+        <h2>Model num: {value}</h2>
         <button onClick={onIncrement}>+</button>
         <button onClick={onDecrement}>-</button>
+
+        <h2>Collection length: {length}</h2>
         <button onClick={onPush}>Push</button>
         <button onClick={onPop}>Pop</button>
     </div>
