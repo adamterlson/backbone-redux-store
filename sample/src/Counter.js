@@ -25,11 +25,10 @@ const onPush = () => ({ type: 'PUSH', payload: {} });
 const onPop = () => ({ type: 'POP' });
 
 const CounterContainer = connect(
-    // TODO: better names for these keys
-    ({ model: { num }, collection }) => {
+    ({ myModel, myCollection }) => {
         return {
-            value: num,
-            length: collection.length
+            value: myModel.num,
+            length: myCollection.length
         }
     },
     { onIncrement, onDecrement, onPush, onPop }

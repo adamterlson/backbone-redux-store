@@ -2,7 +2,6 @@ import { createStore, compose, applyMiddleware } from 'redux';
 import { bbReducerShim, combineBBEntities, bbStoreEnhancer } from './lib';
 import createLogger from 'redux-logger';
 
-
 const makeShit = (bb) => {
     const reducer = bbReducerShim(bb);
     const enhancer = bbStoreEnhancer(bb);

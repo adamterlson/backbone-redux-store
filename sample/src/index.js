@@ -9,18 +9,17 @@ import CounterView from './CounterView';
 import CounterModel from './CounterModel';
 import CounterCollection from './CounterCollection';
 
-const model = new CounterModel({ num: 3 });
-const collection = new CounterCollection();
+const myModel = new CounterModel({ num: 3 });
+const myCollection = new CounterCollection();
 
-const store = configureStore({ model, collection });
+const store = configureStore({ myModel, myCollection });
 
 // Render Backbone part
-const bbView = new CounterView({ model, collection });
+const bbView = new CounterView({ model: myModel, collection: myCollection });
 bbView.render();
-
 document.getElementById('bbroot').appendChild(bbView.el);
 
-
+// Render React part
 ReactDOM.render(
     <Provider store={store}>
         <Counter />
