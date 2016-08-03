@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "lint": "eslint lib/",
-    "test": "npm lint && echo \"Error: no test specified\" && exit 1",
+    "test": "npm run lint",
     "build": "mkdir -p dist && babel --presets es2015 --plugins babel-plugin-transform-object-rest-spread -d dist/ lib/",
     "prepublish": "npm run build && npm run test"
   },
