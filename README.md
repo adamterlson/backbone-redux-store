@@ -1,6 +1,6 @@
 # Simple Backbone Redux
 
-This library is very simple.  It provides a redux store API to your backbone models and collections so that they can be used transparently with redux-dependent libraries (e.g. react-redux).
+This library is very simple. It provides a redux store API to your backbone models and collections so that they can be used transparently with redux-dependent libraries (e.g. [react-redux](https://github.com/reactjs/react-redux)).
 
 There are no dependencies.
 
@@ -10,7 +10,7 @@ There are no dependencies.
 import { createBBStore, combineBBEntities } from 'simple-backbone-redux';
 
 const bbStore = createBBStore(combineBBEntities({
-	foo: new FooModel(),
+    foo: new FooModel(),
     bar: new BarCollection()
 }));
 ```
