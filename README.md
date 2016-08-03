@@ -1,4 +1,4 @@
-# Simple Backbone Redux
+# Backbone Redux Store
 
 This library is very simple. It provides a redux store API to your backbone models and collections so that they can be used transparently with redux-dependent libraries (e.g. [react-redux](https://github.com/reactjs/react-redux)).
 

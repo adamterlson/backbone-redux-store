@@ -1,14 +1,24 @@
 {
-  "name": "simple-backbone-redux",
-  "version": "0.0.1",
-  "description": "",
-  "main": "lib/index.js",
+  "name": "backbone-redux-store",
+  "version": "0.1.0",
+  "description": "Redux store API for your Backbone Models and Collections. Works with or without Redux",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint lib/",
+    "test": "npm lint && echo \"Error: no test specified\" && exit 1",
+    "build": "mkdir -p dist && babel --presets es2015 --plugins babel-plugin-transform-object-rest-spread -d dist/ lib/",
+    "prepublish": "npm run build && npm run test"
   },
-  "author": "Adam Terlson <adam.terlson@gmail.com>",
-  "license": "ISC",
+  "author": "Adam & Vitor",
+  "contributors": [
+    "Adam Terlson <adam.terlson@gmail.com>",
+    "Vitor Balocco (https://github.com/vitorbal)"
+  ],
+  "license": "MIT",
   "devDependencies": {
+    "babel-cli": "^6.11.4",
+    "babel-plugin-transform-object-rest-spread": "^6.8.0",
+    "babel-preset-es2015": "^6.9.0",
     "create-react-app": "^0.2.0",
     "redux": "^3.5.2",
     "redux-logger": "^2.6.1"
