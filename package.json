@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "description": "Redux store API for your Backbone Models and Collections. Works with or without Redux",
   "main": "dist/index.js",
+  "files": [
+    "dist/"
+  ],
   "scripts": {
     "lint": "eslint lib/",
     "test": "npm run lint",
