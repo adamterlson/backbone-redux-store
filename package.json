@@ -17,6 +17,10 @@
     "Adam Terlson <adam.terlson@gmail.com>",
     "Vitor Balocco (https://github.com/vitorbal)"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/adamterlson/backbone-redux-store"
+  },
   "license": "MIT",
   "devDependencies": {
     "babel-cli": "^6.11.4",
