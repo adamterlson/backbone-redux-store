@@ -4,7 +4,7 @@ This library is very simple. It provides a redux store API to your backbone mode
 
 There are no dependencies.
 
-Writen by Vitor Balocco (@vitorbal) and Adam Terlson (@adamterlson).
+Writen by Vitor Balocco ([@vitorbal](https://github.com/vitorbal)) and Adam Terlson ([@adamterlson](https://github.com/adamterlson)).
 
 ## Usage
 
