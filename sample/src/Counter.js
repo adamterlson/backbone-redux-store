@@ -2,21 +2,21 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 const Counter = ({
-    value,
-    length,
+    modelNum,
+    collectionLength,
     onIncrement,
     onDecrement,
     onPush,
     onPop
 }) => (
     <div>
-        <h1>React Part</h1>
+        <h2>React Component</h2>
 
-        <h2>Model num: {value}</h2>
+        <h3>this.props.modelNum: {modelNum}</h3>
         <button onClick={onIncrement}>+</button>
         <button onClick={onDecrement}>-</button>
 
-        <h2>Collection length: {length}</h2>
+        <h3>this.props.collectionLength: {collectionLength}</h3>
         <button onClick={onPush}>Push</button>
         <button onClick={onPop}>Pop</button>
     </div>
@@ -28,10 +28,10 @@ const onPush = () => ({ type: 'PUSH', payload: {} });
 const onPop = () => ({ type: 'POP' });
 
 const CounterContainer = connect(
-    ({ myModel, myCollection }) => {
+    ({ model, collection }) => {
         return {
-            value: myModel.num,
-            length: myCollection.length
+            modelNum: model.num,
+            collectionLength: collection.length
         }
     },
     { onIncrement, onDecrement, onPush, onPop }
