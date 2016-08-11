@@ -10,9 +10,9 @@ Writen by Vitor Balocco ([@vitorbal](https://github.com/vitorbal)) and Adam Terl
 ## Usage
 
 ```javascript
-import { createBBStore, combineBBEntities } from 'simple-backbone-redux';
+import { bbCreateStore, bbCombineEntities } from 'simple-backbone-redux';
 
-const bbStore = createBBStore(combineBBEntities({
+const bbStore = bbCreateStore(bbCombineEntities({
     foo: new FooModel(),
     bar: new BarCollection()
 }));

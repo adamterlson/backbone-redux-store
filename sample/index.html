@@ -9,20 +9,23 @@
             body {
             }
 
-            body {
+            h1 {
+                text-align: center;
+            }
+
+            .tile {
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 flex-wrap: nowrap;
             }
 
-            #root,
-            #bbroot {
+            .root-react,
+            .root-bb {
                 padding: 60px;
-
             }
 
-            #arrow {
+            .arrow {
                 font-size: 80px;
                 color: cadetblue;
                 -webkit-font-smoothing: antialiased;
@@ -30,8 +33,17 @@
         </style>
     </head>
     <body>
-        <div id="root"></div>
-        <div id="arrow">⬄</div>
-        <div id="bbroot"></div>
+        <h1>Without Redux</h1>
+        <div class="tile no-redux">
+            <div class="root-react"></div>
+            <div class="arrow">⬄</div>
+            <div class="root-bb"></div>
+        </div>
+        <h1>With Redux (and Redux Logger Middleware - see console)</h1>
+        <div class="tile with-redux">
+            <div class="root-react"></div>
+            <div class="arrow">⬄</div>
+            <div class="root-bb"></div>
+        </div>
     </body>
 </html>
