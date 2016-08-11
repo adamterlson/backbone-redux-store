@@ -1,7 +1,7 @@
 /* globals describe it */
 
 import assert from 'assert';
-import { createStore, createBBStore } from '../../lib';
+import { createStore, bbCreateStore } from '../../lib';
 
 describe('createStore()', () => {
     it('returns an object with the store API', () => {
@@ -62,5 +62,5 @@ describe('createStore()', () => {
 });
 
 /** ??? **/
-describe('createBBStore()', () => {
+describe('bbCreateStore()', () => {
 });

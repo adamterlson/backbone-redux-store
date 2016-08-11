@@ -1,13 +1,14 @@
-/**
- * combineBBEntites({
- *   foo: myFooModel,
- *   bar: myBarCollection
- * })
- */
+const BB_EVENT_NAME = '__HELLO_ENHANCER__';
 
-export const bbDispatch = (bb, type, payload) => bb.trigger('__HELLO_ENHANCER__', { type, payload });
+export const bbDispatch = (bb, type, payload) =>
+    bb.trigger(BB_EVENT_NAME, { type, payload });
 
-export const combineBBEntities = (hash) => {
+export const bbCombineEntities = (hash) => {
+    // Check if it's already got the BB API, probably by being called with a
+    // single BB entity rather than a hash.  If yes, just return it.
+    if (hash.on && hash.trigger && hash.toJSON) {
+        return hash;
+    }
     const bbThings = Object.keys(hash).map(name => hash[name]);
 
     const on = (...args) =>
@@ -23,11 +24,11 @@ export const combineBBEntities = (hash) => {
     return {
         on,
         trigger,
-        toJSON
+        toJSON,
     };
-}
+};
 
-export const bbReducerShim = ({ toJSON }) => () => toJSON(); // like a boss
+export const bbReducer = ({ toJSON }) => () => toJSON(); // like a boss
 
 // For usage with redux
 export const bbStoreEnhancer = (bb) => (createStore) => (...args) => {
@@ -37,5 +38,54 @@ export const bbStoreEnhancer = (bb) => (createStore) => (...args) => {
         store.dispatch(action);
     };
 
-    return Object.assign({}, store, { dispatch });
+    return {
+        ...store,
+        dispatch,
+    };
+};
+
+// For usage without redux
+export const createStore = (reducer, __, enhancer) => {
+    if (enhancer) {
+        return enhancer(createStore)(reducer);
+    }
+
+    let listeners = [];
+
+    const notifyAllListeners = () => listeners.forEach(listener => listener());
+
+    const getState = () => reducer();
+
+    const dispatch = () => notifyAllListeners();
+
+    const subscribe = (listener) => {
+        listeners.push(listener);
+        return () => {
+            listeners = listeners.filter(l => l !== listener);
+            return listeners;
+        };
+    };
+
+    dispatch();
+
+    return {
+        _listeners: listeners,
+        getState,
+        dispatch,
+        subscribe,
+    };
+};
+
+const noop = arg => arg;
+
+export const bbCreateStore = (storeCreator) => (bbEntities, enhancer = noop) => {
+    const makeStore = storeCreator || createStore;
+
+    const bb = bbCombineEntities(bbEntities);
+    const composedEnhancers = (...args) => bbStoreEnhancer(bb)(enhancer(...args));
+    const store = makeStore(bbReducer(bb), {}, composedEnhancers);
+
+    bb.on(BB_EVENT_NAME, (action) => store.dispatch(action, { silent: true }));
+
+    return store;
 };
