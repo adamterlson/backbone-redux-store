@@ -6,6 +6,7 @@ parserOptions:
 
 rules:
     indent: ["error", 4]
+    max-len: ["error", 120]
     valid-jsdoc: ["error", {
         prefer: { "return": "returns" }
     }]

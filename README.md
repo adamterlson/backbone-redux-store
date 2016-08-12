@@ -94,22 +94,22 @@ TODO: Show the path from only backbone to only redux.
 
 ### bbCreateStore
 
-Convenience method to quickly create our store, optionally using the redux
-createStore() method or our own defined above.  Automatically combines
-entities (which is a noop if single entity is provided), creates the store
-enhancer for the entities, and subscribes to the wiring event.
+Convenience method to quickly create our store, optionally using the Redux createStore() method or our own defined
+above. Automatically combines entities (which is a noop if single entity is provided), creates the store enhancer for
+the entities, and subscribes to the wiring event.
 
 **Parameters**
 
--   `storeCreator` **\[[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)]** 
+-   `storeCreator` **\[[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)]** Function that creates a Redux-like store, implementing the same API methods.
+                                       In Redux, this is the `createStore` function.
 
-Returns **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** 
+Returns **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** A function that expects two arguments: an Object of key/value pairs where the values are
+                      Backbone entities, and an optional store enhancer. Returns a store.
 
 ### bbDispatch
 
-Dispatch-like usage, but triggers a special event behind the scenes which is
-listened to by the store-enhancer.  This is the communication method from
-the backbone world into the react world.
+Dispatch-like usage, but triggers a special event behind the scenes which is listened to by the store-enhancer.
+This is the communication method from the Backbone world into the react world.
 
 **Parameters**
 
