@@ -1,5 +1,5 @@
 import Backbone from 'backbone';
-import { bbDispatch } from './lib';
+import { bbDispatch } from 'backbone-redux-store';
 
 const CounterView = Backbone.View.extend({
     initialize() {
