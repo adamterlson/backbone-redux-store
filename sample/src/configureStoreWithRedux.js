@@ -2,9 +2,9 @@ import { createStore, applyMiddleware } from 'redux';
 import { bbCreateStore } from 'backbone-redux-store';
 import createLogger from 'redux-logger';
 
-export default (bb) => {
+export default (backboneEntitiesHash) => {
     const store = bbCreateStore(createStore)(
-        bb,
+        backboneEntitiesHash,
         applyMiddleware(createLogger())
     );
 
