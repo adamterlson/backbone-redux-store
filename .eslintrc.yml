@@ -1,9 +1,11 @@
 extends: airbnb
 
 parserOptions:
-  ecmaFeatures:
-      experimentalObjectRestSpread: true
+    ecmaFeatures:
+        experimentalObjectRestSpread: true
 
 rules:
-  indent: ["error", 4]
-
+    indent: ["error", 4]
+    valid-jsdoc: ["error", {
+        prefer: { "return": "returns" }
+    }]
