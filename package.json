@@ -9,7 +9,8 @@
   "scripts": {
     "lint": "eslint lib/",
     "test": "npm run lint && mocha --require babel-register test/**/*.js",
-    "build": "mkdir -p dist && babel -d dist/ lib/",
+    "build": "mkdir -p dist && babel -d dist/ lib/ && npm run docs",
+    "docs": "documentation readme lib/index.js -f md --section \"API\" --access \"public\"",
     "prepublish": "npm run build && npm run test"
   },
   "author": "Adam & Vitor",
@@ -28,6 +29,7 @@
     "babel-preset-es2015": "^6.9.0",
     "babel-register": "^6.11.6",
     "create-react-app": "^0.2.0",
+    "documentation": "^4.0.0-beta9",
     "eslint": "^3.2.2",
     "eslint-config-airbnb": "^10.0.0",
     "eslint-plugin-import": "^1.12.0",
