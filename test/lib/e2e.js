@@ -148,31 +148,27 @@ describe('e2e communication', () => {
                 store.subscribe(() => listenerCalledCount++);
             });
 
-            describe('state changes happen via', () => {
-                it('bbDispatch()', () => {
-                    bbDispatch(growingCollection, 'POP');
-                    bbDispatch(growingCollection, 'POP');
+            it('throws if reducer does not return bb entity', () => {
+                assert.throws(
+                    () => bbCreateStore()(() => ({})),
+                    'bbCreateStore()(bbEntityOrReducer) - Must give a bb entity or a reducer which returns one.'
+                );
+            });
 
-                    assert.equal(listenerCalledCount, 2);
-                    assert.equal(growingCollection.length, 1);
-                    assert.equal(store.getState().length, 1);
-                });
+            it('should not change state via bbDispatch()', () => {
+                bbDispatch(growingCollection, 'POP');
+                assert.equal(listenerCalledCount, 0);
+                assert.equal(growingCollection.length, 3);
+                assert.equal(store.getState().length, 3);
+            });
 
-                it('store.dispatch()', () => {
-                    store.dispatch({ type: 'PUSH', payload: { new: true } });
+            it('should change state via store.dispatch()', () => {
+                store.dispatch({ type: 'PUSH', payload: { new: true } });
 
-                    assert.equal(growingCollection.last().get('new'), true);
-                    assert.equal(listenerCalledCount, 1);
-                    assert.equal(growingCollection.length, 4);
-                    assert.equal(store.getState().length, 4);
-                });
-
-                it('throws if reducer does not return bb entity', () => {
-                    assert.throws(
-                        () => bbCreateStore()(() => ({})),
-                        'bbCreateStore()(bbEntityOrReducer) - Must give a bb entity or a reducer which returns one.'
-                    );
-                });
+                assert.equal(growingCollection.last().get('new'), true);
+                assert.equal(listenerCalledCount, 1);
+                assert.equal(growingCollection.length, 4);
+                assert.equal(store.getState().length, 4);
             });
         });
     });
