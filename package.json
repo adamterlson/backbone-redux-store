@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "lint": "eslint lib/",
-    "test": "mocha --require babel-register test/**/*.js -R spec --ui bdd && npm run lint",
+    "test": "mocha --require babel-register test/**/*.js -R spec --ui bdd && npm run lint --silent",
     "build": "mkdir -p dist && babel -d dist/ lib/ && npm run docs",
     "docs": "documentation readme lib/index.js -f md --section \"API\" --access \"public\"",
     "prepublish": "npm run build && npm run test"
