@@ -1,7 +1,7 @@
-/* globals describe it */
+/* eslint-env node, mocha */
 
 import assert from 'assert';
-import { createStore, bbCreateStore } from '../../lib';
+import { createStore } from '../../lib';
 
 describe('createStore()', () => {
     it('returns an object with the store API', () => {
@@ -29,18 +29,31 @@ describe('createStore()', () => {
         });
 
         describe('dispatch()', () => {
-            it('notifies all subscribers', () => {
-                let spyCount = 0;
-                const listener = () => spyCount++;
-                const store = createStore(() => {});
+            let spyCount = 0;
+            let listener;
+            let store;
 
+            beforeEach(() => {
+                listener = () => spyCount++;
+                store = createStore(() => {});
+            });
+
+            it('notifies all subscribers', () => {
                 /* eslint-disable no-underscore-dangle */
                 store._listeners.push(listener, listener, listener);
                 /* eslint-enable no-underscore-dangle */
 
-                store.dispatch();
+                store.dispatch({ type: 'SOMETHING' });
 
                 assert.strictEqual(spyCount, 3);
+            });
+
+            it('throws if called without action', () => {
+                assert.throws(() => store.dispatch(), 'dispatch(action) - action is required');
+            });
+
+            it('throws if called without action.type', () => {
+                assert.throws(() => store.dispatch(), 'dispatch(action) - action is required');
             });
         });
 
