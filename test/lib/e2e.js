@@ -2,7 +2,7 @@
 
 /* eslint-disable import/no-extraneous-dependencies */
 import Backbone from 'backbone';
-import { createStore } from 'redux';
+import { createStore, combineReducers } from 'redux';
 /* eslint-enable import/no-extraneous-dependencies */
 
 import assert from 'assert';
@@ -124,7 +124,7 @@ describe('e2e communication', () => {
     });
 
     describe('bbCreateStore()(reducer)', () => {
-        const collectionReducer = collection => ({ type, payload }) => {
+        const collectionReducer = collection => (state, { type, payload }) => {
             switch (type) {
             case 'PUSH':
                 collection.push(payload);
@@ -137,9 +137,23 @@ describe('e2e communication', () => {
             }
         };
 
+        const modelReducer = model => (state, { type, payload }) => {
+            switch (type) {
+            case 'INCREMENT':
+                model.set({ num: model.get('num') + 1 });
+                return model;
+            case 'DECREMENT':
+                model.set({ num: model.get('num') - 1 });
+                return model;
+            default:
+                return model;
+            }
+        };
+
         beforeEach(() => {
             listenerCalledCount = 0;
             growingCollection = new Backbone.Collection([{}, {}, {}]);
+            incrementingModel = new Backbone.Model({ num: 3 });
         });
 
         describe('reducer returning collection', () => {
@@ -148,10 +162,17 @@ describe('e2e communication', () => {
                 store.subscribe(() => listenerCalledCount++);
             });
 
-            it('throws if reducer does not return bb entity', () => {
+            it('throws if reducer or bbEntity not passed', () => {
                 assert.throws(
-                    () => bbCreateStore()(() => ({})),
+                    () => bbCreateStore()(),
                     'bbCreateStore()(bbEntityOrReducer) - Must give a bb entity or a reducer which returns one.'
+                );
+            });
+
+            it('throws if reducer returns undefined', () => {
+                assert.throws(
+                    () => bbCreateStore()(() => undefined),
+                    'Reducer must have a return value'
                 );
             });
 
@@ -169,6 +190,55 @@ describe('e2e communication', () => {
                 assert.equal(listenerCalledCount, 1);
                 assert.equal(growingCollection.length, 4);
                 assert.equal(store.getState().length, 4);
+            });
+
+            it('should be called with the previous state in the next reducer call', () => {
+                const prevStateArgs = [];
+                const defaultState = { defaultStateArg: true };
+
+                store = bbCreateStore()((state, { type }) => {
+                    prevStateArgs.push(state);
+
+                    switch(type) {
+                    case 'INCREMENT':
+                        return 'incremented';
+                    case 'DECREMENT':
+                        return 'decremented';
+                    default:
+                        return state;
+                    }
+                }, defaultState);
+
+                store.dispatch({ type: 'INCREMENT' });
+                store.dispatch({ type: 'DECREMENT' });
+                store.dispatch({ type: 'Just push it' });
+
+                assert.deepEqual(prevStateArgs[0], defaultState);
+                assert.deepEqual(prevStateArgs[1], defaultState);
+                assert.equal(prevStateArgs[2], 'incremented');
+                assert.equal(prevStateArgs[3], 'decremented');
+            });
+        });
+
+        describe('multiple reducers with combineReducer', () => {
+            beforeEach(() => {
+                store = bbCreateStore()(combineReducers({
+                    collection: collectionReducer(growingCollection),
+                    model: modelReducer(incrementingModel),
+                }));
+                store.subscribe(() => listenerCalledCount++);
+            });
+
+            it('should change the collection and model state via store.dispatch()', () => {
+                store.dispatch({ type: 'PUSH', payload: { new: true } });
+                store.dispatch({ type: 'INCREMENT' });
+
+                assert.equal(growingCollection.last().get('new'), true);
+                assert.equal(incrementingModel.get('num'), 4);
+                assert.equal(listenerCalledCount, 2);
+                assert.equal(growingCollection.length, 4);
+                assert.equal(store.getState().collection.length, 4);
+                assert.equal(store.getState().model.num, 4);
             });
         });
     });
