@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "lint": "eslint .",
-    "test": "mocha --require babel-register test/**/*.js -R spec --ui bdd && npm run lint --silent",
+    "test": "mocha --require babel-register test/**/*.js -R spec --ui bdd",
     "build": "mkdir -p dist && babel -d dist/ lib/ && npm run docs",
     "docs": "documentation readme lib/index.js -f md --section \"API\" --access \"public\"",
     "prepublish": "npm run build && npm run test"
@@ -36,8 +36,10 @@
     "eslint-plugin-import": "^1.12.0",
     "eslint-plugin-jsx-a11y": "^2.0.1",
     "eslint-plugin-react": "^6.0.0",
+    "expect": "^1.20.2",
     "mocha": "^3.0.1",
     "redux": "~3.5.2",
     "redux-logger": "^2.6.1"
-  }
+  },
+  "dependencies": {}
 }
