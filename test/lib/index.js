@@ -53,7 +53,7 @@ describe('createStore()', () => {
             });
 
             it('throws if called without action.type', () => {
-                assert.throws(() => store.dispatch(), 'dispatch(action) - action is required');
+                assert.throws(() => store.dispatch({}), 'dispatch(action) - action is required');
             });
         });
 
