@@ -7,7 +7,7 @@
     "dist/"
   ],
   "scripts": {
-    "lint": "eslint lib/",
+    "lint": "eslint .",
     "test": "mocha --require babel-register test/**/*.js -R spec --ui bdd && npm run lint --silent",
     "build": "mkdir -p dist && babel -d dist/ lib/ && npm run docs",
     "docs": "documentation readme lib/index.js -f md --section \"API\" --access \"public\"",
