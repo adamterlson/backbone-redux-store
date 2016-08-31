@@ -101,6 +101,8 @@ Automatically combines all Backbone entities passed in and creates all the wirin
 
 -   `storeCreator` **\[[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)]** Function that creates a Redux-like store, implementing the same API methods.
                                        In Redux, this is the `createStore` function.
+-   `defaultState` **Any** If using a reducer, the initial state is passed during the first call to the reducer,
+                              otherwise undefined is given.
 
 Returns **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** A function that expects two arguments: an Object of key/value pairs where the values are
                       Backbone entities, and an optional store enhancer. Returns a store.
