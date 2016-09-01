@@ -120,7 +120,7 @@ describe('e2e communication', () => {
         });
     });
 
-    describe('bbCreateStore(createStore)(incrementingModelReducer, model)', () => {
+    describe('bbCreateStore(createStore)(incrementingModelReducer)', () => {
         describe('without defaultState, using default args', () => {
             beforeEach(() => {
                 listenerCalledCount = 0;
@@ -136,11 +136,11 @@ describe('e2e communication', () => {
             });
 
             describe('backbone -> store', () => {
-                it('should not affect store change via bbDispatch because of missing defaultState', () => {
+                it('should affect store change via bbDispatch', () => {
                     bbDispatch(incrementingModel, 'INCREMENT');
-                    assert.equal(incrementingModel.get('num'), 3);
-                    assert.equal(store.getState().num, 3);
-                    assert.equal(listenerCalledCount, 0);
+                    assert.equal(incrementingModel.get('num'), 4);
+                    assert.equal(store.getState().num, 4);
+                    assert.equal(listenerCalledCount, 1);
                 });
             });
 
