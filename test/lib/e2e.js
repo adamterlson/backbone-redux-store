@@ -21,18 +21,24 @@ const GrowingCollection = Backbone.Collection.extend({
         this.listenTo(this, 'POP', (obj) => this.pop(obj));
     },
 });
-const incrementingModelReducer = (model = new IncrementingModel(), action) => {
-    if (action.type === 'INCREMENT') {
-        model.set('num', model.get('num') + 1);
+
+const makeModelReducer = (defaultModel = new IncrementingModel()) => (
+    (model = defaultModel, action) => {
+        if (action.type === 'INCREMENT') {
+            model.set('num', model.get('num') + 1);
+        }
+        return model;
     }
-    return model;
-};
-const growingCollectionReducer = (collection = new GrowingCollection(), action) => {
-    if (action.type === 'PUSH') {
-        collection.push(action.payload);
+);
+
+const makeCollectionReducer = (defaultCollection = new GrowingCollection()) => (
+    (collection = defaultCollection, action) => {
+        if (action.type === 'PUSH') {
+            collection.push(action.payload);
+        }
+        return collection;
     }
-    return collection;
-};
+);
 
 describe('e2e communication', () => {
     let listenerCalledCount;
@@ -120,7 +126,7 @@ describe('e2e communication', () => {
         });
     });
 
-    describe('bbCreateStore(createStore)(incrementingModelReducer)', () => {
+    describe('bbCreateStore(createStore)(makeModelReducer())', () => {
         describe('without defaultState, using default args', () => {
             beforeEach(() => {
                 listenerCalledCount = 0;
@@ -159,7 +165,7 @@ describe('e2e communication', () => {
             beforeEach(() => {
                 listenerCalledCount = 0;
                 incrementingModel = new IncrementingModel({ num: 3 });
-                store = bbCreateStore(createStore)(incrementingModelReducer, incrementingModel);
+                store = bbCreateStore(createStore)(makeModelReducer(), incrementingModel);
                 store.subscribe(() => listenerCalledCount++);
             });
 
@@ -185,11 +191,11 @@ describe('e2e communication', () => {
         });
     });
 
-    describe('bbCreateStore()(incrementingModelReducer, model)', () => {
+    describe('bbCreateStore()(makeModelReducer(), model)', () => {
         beforeEach(() => {
             listenerCalledCount = 0;
             incrementingModel = new IncrementingModel({ num: 3 });
-            store = bbCreateStore()(incrementingModelReducer, incrementingModel);
+            store = bbCreateStore()(makeModelReducer(), incrementingModel);
             store.subscribe(() => listenerCalledCount++);
         });
 
@@ -217,8 +223,8 @@ describe('e2e communication', () => {
     describe('bbCreateStore()(combineReducers({ modelReducer, collectionReducer }), { model, collection })', () => {
         beforeEach(() => {
             const reducer = combineReducers({
-                model: incrementingModelReducer,
-                collection: growingCollectionReducer,
+                model: makeModelReducer(),
+                collection: makeCollectionReducer(),
             });
             listenerCalledCount = 0;
             incrementingModel = new IncrementingModel({ num: 3 });
@@ -249,6 +255,51 @@ describe('e2e communication', () => {
                 assert.equal(growingCollection.length, 4);
                 assert.equal(store.getState().model.num, 4);
                 assert.equal(store.getState().collection.length, 4);
+                assert.equal(listenerCalledCount, 2);
+            });
+        });
+    });
+
+    describe('bbCreateStore()(combineReducers({ modelReducer, collectionReducer }))', () => {
+        let defaultReducerModel;
+        let defaultReducerCollection;
+
+        beforeEach(() => {
+            defaultReducerModel = new IncrementingModel({ num: 0 });
+            defaultReducerCollection = new GrowingCollection([]);
+
+            const reducer = combineReducers({
+                model: makeModelReducer(defaultReducerModel),
+                collection: makeCollectionReducer(defaultReducerCollection),
+            });
+
+            listenerCalledCount = 0;
+            store = bbCreateStore()(reducer);
+            store.subscribe(() => listenerCalledCount++);
+        });
+
+        describe('backbone -> store', () => {
+            it('should affect store change via bbDispatch', () => {
+                bbDispatch(defaultReducerModel, 'INCREMENT');
+                bbDispatch(defaultReducerCollection, 'PUSH', {});
+
+                assert.equal(defaultReducerModel.get('num'), 1);
+                assert.equal(defaultReducerCollection.length, 1);
+                assert.equal(store.getState().model.num, 1);
+                assert.equal(store.getState().collection.length, 1);
+                assert.equal(listenerCalledCount, 2);
+            });
+        });
+
+        describe('store -> backbone', () => {
+            it('should affect model change via store.dispatch', () => {
+                store.dispatch({ type: 'INCREMENT' });
+                store.dispatch({ type: 'PUSH', payload: {} });
+
+                assert.equal(defaultReducerModel.get('num'), 1);
+                assert.equal(defaultReducerCollection.length, 1);
+                assert.equal(store.getState().model.num, 1);
+                assert.equal(store.getState().collection.length, 1);
                 assert.equal(listenerCalledCount, 2);
             });
         });
