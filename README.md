@@ -88,7 +88,7 @@ However, **React doesn't need to know Backbone exists**, so you can leverage bot
 
 ## Migration Strategy
 
-TODO: Show the path from only backbone to only redux.
+You can check out an example project where a backbone-only stack is incrementally migrated to Redux with the help of backbone-redux-store [here](https://github.com/vitorbal/backbone-redux-store-example).
 
 ## API
 
