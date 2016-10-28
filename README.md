@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/adamterlson/backbone-redux-store.svg?branch=master)](https://travis-ci.org/adamterlson/backbone-redux-store)
 
+[Example of BRS in action](https://github.com/vitorbal/backbone-redux-store-example)
+
 This library services apps that are built with both Backbone and React and want to make the React world talk to the Backbone world. It allows for seamless state syncing between React components and Backbone views, where the state's source of truth are your existing Backbone models and collections, but the API is redux.
 
 -   Expose Backbone-backed state to your React components via libraries like [react-redux](https://github.com/reactjs/react-redux) so they never have to (messily) know about Backbone and can be future-proofed for Redux
